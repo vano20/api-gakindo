@@ -14,12 +14,6 @@
     "/api/provinces/cities": {
       "get": {
         "description": "Get provinces list",
-        "parameters": [
-          {
-            "province": "province",
-            "in": "query"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success get provinces list",
@@ -40,6 +34,12 @@
                             "type": "string"
                           },
                           "name": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "updated_at": {
                             "type": "string"
                           }
                         }
