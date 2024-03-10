@@ -31,7 +31,7 @@ class RegistrationsCreateRequest extends FormRequest
             'phone_number' => ['required', 'max:20'],
             'position' => ['required', 'max:100'],
             'company_address' => ['required', 'max:200'],
-            'npwp' => ['required', 'max:16'],
+            'npwp' => ['required', 'max:16', 'unique:registrations,npwp'],
             'qualification' => ['required', 'max:100'],
             'province_id' => ['required']
         ];
