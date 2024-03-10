@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/download-pdf', [RegistrationsController::class, 'downloadPdf']);
+Route::get('/download-pdf/{id}', [RegistrationsController::class, 'downloadPdf'])->where('id', '[0-9]+');

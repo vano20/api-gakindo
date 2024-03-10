@@ -24,16 +24,14 @@ class RegistrationsController extends Controller
         return (new RegistrationsResource($registration))->response()->setStatusCode(201);
     }
 
-    public function downloadPdf()
+    public function downloadPdf(string $npwp)
     {
-        $currentYear = date('Y');
-        $data = [
-            'title' => 'How to create PDF',
-            'date' => date('d/m/Y'),
-            'currentYear' => $currentYear,
-        ];
+        $data = $this->detail($npwp);
+        $pdfData = $data->toArray($data);
+        $pdfData['currentYear'] = date('Y');
+        $pdfData['membership_id'] = '123.456/890/2024';
 
-        $pdf = Pdf::loadView('index', $data)->setPaper('a4', 'landscape');
+        $pdf = Pdf::loadView('index', $pdfData)->setPaper('a4', 'landscape');
         //  $pdf = Pdf::loadFile(storage_path('kta_2023.pdf'));
         return $pdf->stream();
     }

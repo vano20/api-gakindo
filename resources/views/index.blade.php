@@ -121,7 +121,10 @@
           <div class="arimo" style="font-size: x-small; line-height: 0;"><i>Certificate of Ordinary Member</i></div>
         </div>
         <div class="membership">
-            <div class="arimo" style="font-size: 14px; margin-bottom: 14px;">No. Anggota</div>
+            <div class="arimo" style="font-size: 14px; margin-bottom: 14px;">
+              No. Anggota
+              <span>{{$membership_id}}</span>
+            </div>
             <div class="arimo" style="font-size: x-small; line-height: 0;"><i>Membership Nr.</i></div>
         </div>
       </div>
@@ -135,7 +138,7 @@
                 <span class="field">Nama Badan Usaha</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">PT. Jaya abadi</td>
+              <td class="field-value">{{$company_name}}</td>
             </tr>
             <tr>
               <td>
@@ -148,7 +151,7 @@
                 <span class="field">Penanggung Jawab</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">John Doe</td>
+              <td class="field-value">{{$contact_person}}</td>
             </tr>
             <tr>
               <td>
@@ -161,7 +164,7 @@
                 <span class="field">Jabatan</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">Koordinator</td>
+              <td class="field-value">{{$position}}</td>
             </tr>
             <tr>
               <td>
@@ -174,7 +177,7 @@
                 <span class="field">Alamat Badan Usaha</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">Jl. Ir. Soekarno Hatta No. 4</td>
+              <td class="field-value">{{$company_address}}</td>
             </tr>
             <tr>
               <td>
@@ -187,7 +190,7 @@
                 <span class="field" style="letter-spacing: 8px;">NPWP</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">60.123.432.1-666.000</td>
+              <td class="field-value">{{$npwp}}</td>
             </tr>
             <tr>
               <td>
@@ -200,7 +203,7 @@
                 <span class="field">Kualifikasi</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">Kontraktor</td>
+              <td class="field-value">{{$qualification}}</td>
             </tr>
             <tr>
               <td>
