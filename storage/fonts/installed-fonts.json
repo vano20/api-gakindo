@@ -1,0 +1,12 @@
+{
+    "arimo": {
+        "normal": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_normal_fe036ba8de2d1e6d9e9555eecfc5add9",
+        "italic": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_italic_eb9497ff32e527213005d55309b551fe",
+        "500": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_500_6ddd5820089d63c1c4762ec40f3339c3",
+        "600": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_600_324fd3853628234d19f49e94825ac64f",
+        "600_italic": "arimo_600_italic_8af7133d7a62debbbb3025dc45ae46e9"
+    },
+    "roboto": {
+        "900": "roboto_900_998402c1cac11dfa5576980a1a04aadf"
+    }
+}

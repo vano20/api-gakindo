@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/provinces', [\App\Http\Controllers\ProvincesController::class, 'get']);
 Route::get('/provinces/cities/{id}', [\App\Http\Controllers\ProvincesController::class, 'getCities'])->where('id', '[0-9]+');
+Route::post('/registrations', [\App\Http\Controllers\RegistrationsController::class, 'create']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
