@@ -26,7 +26,7 @@ class ProvincesController extends Controller
                         'Provinsi tidak ditemukan'
                     ]
                 ]
-            ])-> setStatusCode(400));
+            ])->setStatusCode(400));
         }
         $provinces = Province::query()->whereRaw('substring_index(code, ".", 1) = '.$province_code.' and length(code) = 5');
 

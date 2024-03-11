@@ -46,7 +46,7 @@ class RegistrationsController extends Controller
                         'NPWP tidak di temukan'
                     ]
                 ]
-            ]));
+            ])->setStatusCode(400));
         }
         return new RegistrationsResource($regist);
     }
