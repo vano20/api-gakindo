@@ -21,7 +21,7 @@ class CreateRegistrationsTable extends Migration
             $table->string('phone_number', 20)->nullable(false);
             $table->string('position', 100)->nullable(false);
             $table->string('company_address', 200)->nullable(false);
-            $table->string('npwp', 16)->nullable(false)->unique();
+            $table->string('npwp', 16)->nullable(false);
             $table->string('qualification', 100)->nullable(false);
             $table->tinyInteger('status')->nullable(false)->comment('1: verified, 0: not verified, 2: rejected');
             $table->string('period', 4)->nullable(false);

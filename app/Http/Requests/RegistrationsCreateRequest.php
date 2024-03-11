@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class RegistrationsCreateRequest extends FormRequest
 {
@@ -31,7 +32,7 @@ class RegistrationsCreateRequest extends FormRequest
             'phone_number' => ['required', 'min:5', 'max:20'],
             'position' => ['required', 'max:100'],
             'company_address' => ['required', 'max:200'],
-            'npwp' => ['required', 'min:15', 'max:16', 'unique:registrations,npwp'],
+            'npwp' => ['required', 'min:15', 'max:16', Rule::unique('registrations', 'npwp')->where('period', date('Y'))],
             'qualification' => ['required', 'max:100'],
             'province_id' => ['required']
         ];
