@@ -38,7 +38,7 @@ class RegistrationsController extends Controller
 
     public function detail(string $npwp): RegistrationsResource
     {
-        $regist = Registration::where('npwp', $npwp)->first();
+        $regist = Registration::where('npwp', $npwp)->where('period', date('Y'))->first();
         if (!$regist) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
@@ -50,4 +50,19 @@ class RegistrationsController extends Controller
         }
         return new RegistrationsResource($regist);
     }
+
+    // public function get(Request $request): RegistrationsResource
+    // {
+    //     $regist = Registration::where('npwp', $request->input('npwp'));
+    //     if (!$regist) {
+    //         throw new HttpResponseException(response()->json([
+    //             'errors' => [
+    //                 'message' => [
+    //                     'Data pendaftaran tidak ditemukan'
+    //                 ]
+    //             ]
+    //         ])->setStatusCode(400));
+    //     }
+    //     return new RegistrationsResource($regist);
+    // }
 }
