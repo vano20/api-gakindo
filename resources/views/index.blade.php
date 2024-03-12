@@ -173,10 +173,10 @@
             </tr>
             <!-- company_address -->
             <tr>
-              <td class="space-td">
+              <td class="space-td" style="width: 180px; ">
                 <span class="field">Alamat Badan Usaha</span>
               </td>
-              <td class="colons">:</td>
+              <td class="colons" style="width: 10px; height: 10px;">:</td>
               <td class="field-value" style="text-transform: capitalize;">{{$company_address}}</td>
             </tr>
             <tr>
