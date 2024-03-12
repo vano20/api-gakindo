@@ -177,7 +177,7 @@
                 <span class="field">Alamat Badan Usaha</span>
               </td>
               <td class="colons">:</td>
-              <td class="field-value">{{$company_address}}</td>
+              <td class="field-value" style="text-transform: capitalize;">{{$company_address}}</td>
             </tr>
             <tr>
               <td>

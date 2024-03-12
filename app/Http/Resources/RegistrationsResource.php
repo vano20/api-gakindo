@@ -28,6 +28,7 @@ class RegistrationsResource extends JsonResource
             'period' => $this->period,
             'province_id' => $this->province_id,
             'membership_id' => $this->membership_id,
+            'provinces' => $this->provinces
         ];
     }
 }
