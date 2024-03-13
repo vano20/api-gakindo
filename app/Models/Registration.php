@@ -25,7 +25,8 @@ class Registration extends Model
         'qualification',
         'status',
         'period',
-        'province_id'
+        'province_id',
+        'membership_id'
     ];
 
     public function provinces(): BelongsTo

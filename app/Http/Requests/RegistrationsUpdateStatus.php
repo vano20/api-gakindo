@@ -26,7 +26,8 @@ class RegistrationsUpdateStatus extends FormRequest
     public function rules()
     {
         return [
-            'status' => ['required', 'max:1']
+            'status' => ['required', 'max:1'],
+            'membership_id' => ['nullable', 'max:200']
         ];
     }
 
@@ -42,6 +43,7 @@ class RegistrationsUpdateStatus extends FormRequest
         return [
             'status.required' => 'Pilih status.',
             'status.max' => 'Status tidak valid.',
+            'membership_id.max' => 'Karakter nomor anggota terlalu panjang.',
         ];
     }
 }
