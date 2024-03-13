@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\RegistrationsCreateRequest;
+use App\Http\Requests\RegistrationsUpdateStatus;
 use App\Http\Resources\RegistrationsCollection;
 use App\Http\Resources\RegistrationsResource;
 use App\Models\Province;
@@ -12,6 +13,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class RegistrationsController extends Controller
@@ -45,7 +47,8 @@ class RegistrationsController extends Controller
 
     public function detail(string $npwp): RegistrationsResource
     {
-        $regist = Registration::where('npwp', $npwp)->where('period', date('Y'))->first();
+        $period = !empty($_GET['period']) ? $_GET['period'] : date('Y');
+        $regist = Registration::where('npwp', $npwp)->where('period', $period)->first();
         if (!$regist) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
@@ -55,6 +58,9 @@ class RegistrationsController extends Controller
                 ]
             ])->setStatusCode(400));
         }
+        [$city] = Province::where('id', $regist['province_id'])->get()->toArray();
+        [$province] = Province::where('code', explode('.', $city['code']))->get()->toArray();
+        $regist['province'] = $province;
         return new RegistrationsResource($regist->load('provinces'));
     }
 
@@ -80,5 +86,22 @@ class RegistrationsController extends Controller
 
         $regist = $regist->paginate($size, ['*'], 'page', $page);
         return new RegistrationsCollection($regist);
+    }
+
+    public function update(int $id, RegistrationsUpdateStatus $request): RegistrationsResource
+    {
+        $regist = Registration::where('id', $id)->first();
+        if (!$regist) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => ['Data tidak ditemukan']
+                ]
+            ]));
+        }
+
+        $data = $request->validated();
+        $regist->fill($data);
+        $regist->save();
+        return new RegistrationsResource($regist);
     }
 }
