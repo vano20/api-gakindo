@@ -20,6 +20,8 @@ Route::post('/registrations', [\App\Http\Controllers\RegistrationsController::cl
 Route::get('/registrations/{npwp}', [\App\Http\Controllers\RegistrationsController::class, 'detail'])->where('npwp', '[0-9]+');
 Route::post('/users', [\App\Http\Controllers\UserController::class, 'register']);
 Route::post('/users/login', [\App\Http\Controllers\UserController::class, 'login']);
+Route::get('/registrations/summary', [\App\Http\Controllers\RegistrationsController::class, 'summaryProvinces']);
+Route::get('/registrations/summary/city/{province}', [\App\Http\Controllers\RegistrationsController::class, 'summaryCity'])->where('province', '[0-9]+');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

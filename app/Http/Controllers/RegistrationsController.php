@@ -104,4 +104,26 @@ class RegistrationsController extends Controller
         $regist->save();
         return new RegistrationsResource($regist);
     }
+
+    public function summaryProvinces(Request $request) : JsonResponse
+    {
+        $date = $request->input('period', date('Y'));
+        $regist = DB::table('provinces', 'a')->selectRaw('substr(code, 1,2) as provinceid, qualification')->join('registrations', 'a.id', '=', 'registrations.province_id', 'inner')->where('status', '=', 1)->where('period', '=', $date);
+
+        $provinces = DB::table('provinces', 'b')->joinSub($regist, 'city', 'city.provinceid', '=', 'b.code', 'left')->whereRaw('length(b.code) = 2')->groupBy('code')->groupBy('b.name')->selectRaw("b.code, b.name, SUM(IF(qualification = 'KECIL', 1, 0)) as KECIL, SUM(IF(qualification = 'MENENGAH', 1, 0)) as MENENGAH, SUM(IF(qualification = 'BESAR', 1, 0)) as BESAR, SUM(IF(qualification = 'SPESIALIS', 1, 0)) as SPESIALIS, SUM(IF(qualification = 'KECIL', 1, 0) + IF(qualification = 'MENENGAH', 1, 0) + IF(qualification = 'BESAR', 1, 0) + IF(qualification = 'SPESIALIS', 1, 0)) as total");
+        return response()->json([
+            'data' => $provinces->get()
+        ])->setStatusCode(200);
+    }
+
+    public function summaryCity(int $province, Request $request) : JsonResponse
+    {
+        $date = $request->input('period', date('Y'));
+        $regist = Registration::where('status', '=', 1)->where('period', '=', $date);
+        $provinces = DB::table('provinces', 'b')->leftJoinSub($regist, 'c', 'b.id', '=', 'c.province_id')->whereRaw('substr(code, 1,2) = ?', [$province])->whereRaw('length(code) = 5')->groupBy('code')->groupBy('name')->selectRaw("code, name, SUM(IF(qualification = 'KECIL', 1, 0)) as KECIL, SUM(IF(qualification = 'MENENGAH', 1, 0)) as MENENGAH, SUM(IF(qualification = 'BESAR', 1, 0)) as BESAR, SUM(IF(qualification = 'SPESIALIS', 1, 0)) as SPESIALIS, SUM(IF(qualification = 'KECIL', 1, 0) + IF(qualification = 'MENENGAH', 1, 0) + IF(qualification = 'BESAR', 1, 0) + IF(qualification = 'SPESIALIS', 1, 0)) as total");
+
+        return response()->json([
+            'data' => $provinces->get()
+        ])->setStatusCode(200);
+    }
 }
