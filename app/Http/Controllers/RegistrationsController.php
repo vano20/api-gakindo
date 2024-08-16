@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\RegistrationsCreateRequest;
+use App\Http\Requests\RegistrationsUpdateRequest;
 use App\Http\Requests\RegistrationsUpdateStatus;
 use App\Http\Resources\RegistrationsCollection;
 use App\Http\Resources\RegistrationsResource;
@@ -27,6 +28,10 @@ class RegistrationsController extends Controller
         $registration->status = 0;
         $registration->save();
 
+        $registration->membership_id = $this->generateMembershipId($registration->id, $registration->period);
+
+        $registration->save();
+
         return (new RegistrationsResource($registration))->response()->setStatusCode(201);
     }
 
@@ -38,17 +43,18 @@ class RegistrationsController extends Controller
         $pdfData['provinces'] = $pdfData['provinces']->toArray();
         $provinceId = explode('.', $pdfData['provinces']['code']);
         [$province] = Province::where('code', $provinceId)->get()->toArray();
-        $pdfData['company_address'] = $pdfData['company_address'] .', '. strtolower($pdfData['provinces']['name'] .', '. strtolower($province['name']));
+        $pdfData['company_address'] = $pdfData['company_address'] . ', ' . strtolower($pdfData['provinces']['name'] . ', ' . strtolower($province['name']));
 
         $pdf = Pdf::loadView('index', $pdfData)->setPaper('a4', 'landscape');
         //  $pdf = Pdf::loadFile(storage_path('kta_2023.pdf'));
         return $pdf->stream();
     }
 
-    public function detail(string $npwp): RegistrationsResource
+    public function detailNpwp(string $npwp): RegistrationsResource
     {
-        $period = !empty($_GET['period']) ? $_GET['period'] : date('Y');
+        $period = $_GET['period'] ?? date('Y');
         $regist = Registration::where('npwp', $npwp)->where('period', $period)->first();
+
         if (!$regist) {
             throw new HttpResponseException(response()->json([
                 'errors' => [
@@ -59,8 +65,31 @@ class RegistrationsController extends Controller
             ])->setStatusCode(400));
         }
         [$city] = Province::where('id', $regist['province_id'])->get()->toArray();
-        [$province] = Province::where('code', explode('.', $city['code']))->get()->toArray();
+        [$provinceCode] = explode('.', $city['code']);
+        [$province] = Province::where('code', $provinceCode)->get()->toArray();
         $regist['province'] = $province;
+
+        return new RegistrationsResource($regist->load('city'));
+    }
+
+    public function detail(int $id): RegistrationsResource
+    {
+        $regist = Registration::where('id', $id)->first();
+
+        if (!$regist) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => [
+                        'Data tidak di temukan'
+                    ]
+                ]
+            ])->setStatusCode(400));
+        }
+        [$city] = Province::where('id', $regist['province_id'])->get()->toArray();
+        [$provinceCode] = explode('.', $city['code']);
+        [$province] = Province::where('code', $provinceCode)->get()->toArray();
+        $regist['province'] = $province;
+
         return new RegistrationsResource($regist->load('provinces'));
     }
 
@@ -82,13 +111,24 @@ class RegistrationsController extends Controller
             if ($period) {
                 $builder->where('period', $period);
             }
+
+            $prov = $request->input('prov');
+            if ($prov) {
+                $builder->where('province_code', $prov);
+            }
+
+            $npwp = $request->input('npwp');
+            if ($npwp) {
+                $builder->where('npwp', $npwp);
+            }
         });
 
         $regist = $regist->paginate($size, ['*'], 'page', $page);
+
         return new RegistrationsCollection($regist);
     }
 
-    public function update(int $id, RegistrationsUpdateStatus $request): RegistrationsResource
+    public function update(int $id, RegistrationsUpdateRequest $request): RegistrationsResource
     {
         $regist = Registration::where('id', $id)->first();
         if (!$regist) {
@@ -102,21 +142,23 @@ class RegistrationsController extends Controller
         $data = $request->validated();
         $regist->fill($data);
         $regist->save();
+
         return new RegistrationsResource($regist);
     }
 
-    public function summaryProvinces(Request $request) : JsonResponse
+    public function summaryProvinces(Request $request): JsonResponse
     {
         $date = $request->input('period', date('Y'));
         $regist = DB::table('provinces', 'a')->selectRaw('substr(code, 1,2) as provinceid, qualification')->join('registrations', 'a.id', '=', 'registrations.province_id', 'inner')->where('status', '=', 1)->where('period', '=', $date);
 
         $provinces = DB::table('provinces', 'b')->joinSub($regist, 'city', 'city.provinceid', '=', 'b.code', 'left')->whereRaw('length(b.code) = 2')->groupBy('code')->groupBy('b.name')->selectRaw("b.code, b.name, SUM(IF(qualification = 'KECIL', 1, 0)) as KECIL, SUM(IF(qualification = 'MENENGAH', 1, 0)) as MENENGAH, SUM(IF(qualification = 'BESAR', 1, 0)) as BESAR, SUM(IF(qualification = 'SPESIALIS', 1, 0)) as SPESIALIS, SUM(IF(qualification = 'KECIL', 1, 0) + IF(qualification = 'MENENGAH', 1, 0) + IF(qualification = 'BESAR', 1, 0) + IF(qualification = 'SPESIALIS', 1, 0)) as total");
+
         return response()->json([
             'data' => $provinces->get()
         ])->setStatusCode(200);
     }
 
-    public function summaryCity(int $province, Request $request) : JsonResponse
+    public function summaryCity(int $province, Request $request): JsonResponse
     {
         $date = $request->input('period', date('Y'));
         $regist = Registration::where('status', '=', 1)->where('period', '=', $date);
@@ -125,5 +167,13 @@ class RegistrationsController extends Controller
         return response()->json([
             'data' => $provinces->get()
         ])->setStatusCode(200);
+    }
+
+    private function generateMembershipId(int $id, ?string $period): string
+    {
+        $identifier = sprintf("%04d", $id);
+        $period = $period ?? date("Y");
+
+        return $identifier . "/GAKINDO/" . $period;
     }
 }

@@ -33,7 +33,7 @@ class ApiAuthMiddleware
             return response()->json([
                 'errors' => [
                     'message' => [
-                        'Tidak diizinkan'
+                        'Tidak di izinkan'
                     ]
                 ]
             ])->setStatusCode(401);

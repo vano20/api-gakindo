@@ -26,11 +26,18 @@ class Registration extends Model
         'status',
         'period',
         'province_id',
-        'membership_id'
+        'membership_id',
+        'company_type',
+        'province_code'
     ];
 
-    public function provinces(): BelongsTo
+    public function city(): BelongsTo
     {
         return $this->belongsTo(Province::class, "province_id", "id");
+    }
+
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, "province_code", "code");
     }
 }

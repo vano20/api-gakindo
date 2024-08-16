@@ -22,13 +22,15 @@ class RegistrationsResource extends JsonResource
             'phone_number' => $this->phone_number,
             'position' => $this->position,
             'company_address' => $this->company_address,
+            'company_type' => $this->company_type,
             'npwp' => $this->npwp,
             'qualification' => $this->qualification,
             'status' => $this->status,
             'period' => $this->period,
             'province_id' => $this->province_id,
+            'province_code' => $this->province_code,
             'membership_id' => $this->membership_id,
-            'provinces' => $this->provinces,
+            'city' => $this->city,
             'province' => $this->province
         ];
     }

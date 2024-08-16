@@ -56,6 +56,7 @@ class UserController extends Controller
     public function get(Request $request): UserResource
     {
         $user = Auth::user();
+
         return new UserResource($user);
     }
 
@@ -67,6 +68,7 @@ class UserController extends Controller
         if (isset($data['password'])) $user->password = Hash::make($data['password']);
 
         $user->save();
+
         return new UserResource($user);
     }
 

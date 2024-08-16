@@ -17,4 +17,9 @@ class Province extends Model
     {
         return $this->hasMany(Registration::class, "province_id", "id");
     }
+
+    public function province(): HasMany
+    {
+        return $this->hasMany(Registration::class, "province_code", "code");
+    }
 }
