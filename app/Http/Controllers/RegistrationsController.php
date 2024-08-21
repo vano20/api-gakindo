@@ -37,13 +37,14 @@ class RegistrationsController extends Controller
 
     public function downloadPdf(string $npwp)
     {
-        $data = $this->detail($npwp);
+        $data = $this->detailNpwp($npwp);
         $pdfData = $data->toArray($data);
-        $pdfData['currentYear'] = date('Y');
-        $pdfData['provinces'] = $pdfData['provinces']->toArray();
-        $provinceId = explode('.', $pdfData['provinces']['code']);
+        $pdfData['currentYear'] = $pdfData['period'];
+        $pdfData['provinces'] = $pdfData['city']->toArray();
+        $provinceId = explode('.', $pdfData['city']['code']);
         [$province] = Province::where('code', $provinceId)->get()->toArray();
-        $pdfData['company_address'] = $pdfData['company_address'] . ', ' . strtolower($pdfData['provinces']['name'] . ', ' . strtolower($province['name']));
+        $pdfData['company_address'] = $pdfData['company_address'] . ', ' . strtolower($pdfData['city']['name'] . ', ' . strtolower($province['name']));
+        $pdfData['director_name'] = 'H. ZAINUDDIN, SE. M.I.KOM';
 
         $pdf = Pdf::loadView('index', $pdfData)->setPaper('a4', 'landscape');
         //  $pdf = Pdf::loadFile(storage_path('kta_2023.pdf'));
@@ -90,7 +91,7 @@ class RegistrationsController extends Controller
         [$province] = Province::where('code', $provinceCode)->get()->toArray();
         $regist['province'] = $province;
 
-        return new RegistrationsResource($regist->load('provinces'));
+        return new RegistrationsResource($regist->load('city'));
     }
 
     public function get(Request $request): RegistrationsCollection
@@ -175,5 +176,24 @@ class RegistrationsController extends Controller
         $period = $period ?? date("Y");
 
         return $identifier . "/GAKINDO/" . $period;
+    }
+
+    public function delete(int $id): JsonResponse
+    {
+        $regist = Registration::where('id', $id)->first();
+
+        if (!$regist) {
+            throw new HttpResponseException(response()->json([
+                'errors' => [
+                    'message' => ['Data tidak ditemukan']
+                ]
+            ])->setStatusCode(404));
+        }
+
+        $regist->delete();
+
+        return response()->json([
+            'data' => true,
+        ])->setStatusCode(200);
     }
 }

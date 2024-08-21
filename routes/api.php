@@ -35,4 +35,5 @@ Route::middleware(\App\Http\Middleware\ApiAuthMiddleware::class)->group(function
     Route::patch('/users/current', [\App\Http\Controllers\UserController::class, 'update']);
     Route::delete('/users/logout', [\App\Http\Controllers\UserController::class, 'logout']);
     Route::put('/registrations/{id}', [\App\Http\Controllers\RegistrationsController::class, 'update'])->where('id', '[0-9]+');
+    Route::delete('/registrations/{id}', [\App\Http\Controllers\RegistrationsController::class, 'delete'])->where('id', '[0-9]+');
 });

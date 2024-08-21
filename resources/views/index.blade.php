@@ -115,7 +115,7 @@
       </div>
       <!-- Header -->
       <div class="header">
-        <img src="https://gakindo.org/wp-content/uploads/2021/07/Gabungan-Kontraktor-Indonesia.jpg" height="80" style="margin-bottom: 5px" />
+        <img src="https://gakindo.or.id/wp-content/uploads/2021/07/Gabungan-Kontraktor-Indonesia.jpg" height="80" style="margin-bottom: 5px" />
         <div class="title" style="text-align: center;">
           <h2 style="font-weight: 500; line-height: 0.1; margin-bottom: 14px;">KARTU TANDA ANGGOTA</h2>
           <div class="arimo" style="font-size: x-small; line-height: 0;"><i>Certificate of Ordinary Member</i></div>
@@ -232,12 +232,15 @@
           <i>head exceutive board</i>
         </div>
         <div class="qrcode">
-          <img src="assets/qrcode_generated.png" height="72px" />
+          <img src="assets/ttd.jpg" height="72px" />
         </div>
-        <div class="arimo semi-bold" style="font-size: 12px; margin-top: 16px; line-height: 0.4;">
+        <div class="arimo semi-bold" style="font-size: 14px; margin-top: 12px; line-height: 0.4;">
+          {{$director_name}}
+        </div>
+        <div class="arimo semi-bold" style="font-size: 12px; margin-top: 6px; line-height: 0.4;">
           Ketua Umum
         </div>
-        <div class="arimo position" style="margin-bottom: 10px;">
+        <div class="arimo position" style="margin-bottom: 4px;">
           <i>president</i>
         </div>
         <div class="arimo semi-bold" style="line-height: 1; font-size: 12px;">

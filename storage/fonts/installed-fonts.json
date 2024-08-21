@@ -1,12 +1,12 @@
 {
     "arimo": {
-        "normal": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_normal_fe036ba8de2d1e6d9e9555eecfc5add9",
-        "italic": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_italic_eb9497ff32e527213005d55309b551fe",
-        "500": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_500_6ddd5820089d63c1c4762ec40f3339c3",
-        "600": "C:\\xampp\\htdocs\\api-gakindo\\storage\\fonts\/arimo_600_324fd3853628234d19f49e94825ac64f",
-        "600_italic": "arimo_600_italic_8af7133d7a62debbbb3025dc45ae46e9"
+        "normal": "\/Users\/farahazzahraazra\/vano\/www\/api-gakindo\/storage\/fonts\/arimo_normal_259bc1515fddfe0d54afcca058b89ee7",
+        "italic": "\/Users\/farahazzahraazra\/vano\/www\/api-gakindo\/storage\/fonts\/arimo_italic_536eef021e43bf5de1b452eb3b7f94ba",
+        "500": "\/Users\/farahazzahraazra\/vano\/www\/api-gakindo\/storage\/fonts\/arimo_500_fdb3b37f39c0849b74395056d500380e",
+        "600": "\/Users\/farahazzahraazra\/vano\/www\/api-gakindo\/storage\/fonts\/arimo_600_8f3d074547e327f9cf07b84b6e7e891e",
+        "600_italic": "arimo_600_italic_0520cec7b73756e70b323bae33406e1e"
     },
     "roboto": {
-        "900": "roboto_900_998402c1cac11dfa5576980a1a04aadf"
+        "900": "roboto_900_e5c070e29c1a961290ae9605036e08f8"
     }
 }
