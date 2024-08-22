@@ -45,6 +45,7 @@ class RegistrationsController extends Controller
         [$province] = Province::where('code', $provinceId)->get()->toArray();
         $pdfData['company_address'] = $pdfData['company_address'] . ', ' . strtolower($pdfData['city']['name'] . ', ' . strtolower($province['name']));
         $pdfData['director_name'] = 'H. ZAINUDDIN, SE. M.I.KOM';
+        $pdfData['url_barcode'] = 'https://api.qrserver.com/v1/create-qr-code/?data=' . url()->current() . '&amp;size=100x100';
 
         $pdf = Pdf::loadView('index', $pdfData)->setPaper('a4', 'landscape');
         //  $pdf = Pdf::loadFile(storage_path('kta_2023.pdf'));

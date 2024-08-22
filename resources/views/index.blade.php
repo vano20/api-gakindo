@@ -113,6 +113,9 @@
       <div class="floating-period">
         <img src="assets/{{$currentYear}}.png" height="172" />
       </div>
+      <div style="position: absolute; right: 150px; top: 30%;">
+        <img src="{{$url_barcode}}" height="94" />
+      </div>
       <!-- Header -->
       <div class="header">
         <img src="https://gakindo.or.id/wp-content/uploads/2021/07/Gabungan-Kontraktor-Indonesia.jpg" height="80" style="margin-bottom: 5px" />
