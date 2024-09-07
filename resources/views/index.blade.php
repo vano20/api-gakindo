@@ -107,14 +107,32 @@
         font-size: 8px;
         text-transform: capitalize;
       }
+      .barcode-verify div:first-child {
+        margin-top: 8px;
+      }
+      .barcode-text {
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .barcode-text-eng {
+        font-size: 12px;
+        font-style: italic;
+        line-height: 0;
+        margin-top: 8px;
+      }
     </style>
     </head>
     <body>
       <div class="floating-period">
         <img src="assets/{{$currentYear}}.png" height="172" />
+        <img src="{{$url_period}}" height="172" />
       </div>
       <div style="position: absolute; right: 150px; top: 30%;">
-        <img src="{{$url_barcode}}" height="94" />
+        <div class="barcode-verify arimo" style="text-align: center;">
+          <img src="{{$url_barcode}}" height="94" />
+          <div class="barcode-text">Pindai untuk verifikasi</div>
+          <div class="barcode-text-eng">Scan to verify</div>
+        </div>
       </div>
       <!-- Header -->
       <div class="header">
@@ -234,8 +252,8 @@
         <div class="arimo position">
           <i>head exceutive board</i>
         </div>
-        <div class="qrcode">
-          <img src="assets/ttd.jpg" height="72px" />
+        <div style="margin-top: 4px;">
+          <img src="{{$url_barcode_sign}}" height="64px" />
         </div>
         <div class="arimo semi-bold" style="font-size: 14px; margin-top: 12px; line-height: 0.4;">
           {{$director_name}}

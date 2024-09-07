@@ -37,6 +37,7 @@ class RegistrationsController extends Controller
 
     public function downloadPdf(string $npwp)
     {
+        $currentUrl = parse_url(url()->current());
         $data = $this->detailNpwp($npwp);
         $pdfData = $data->toArray($data);
         $pdfData['currentYear'] = $pdfData['period'];
@@ -45,6 +46,10 @@ class RegistrationsController extends Controller
         [$province] = Province::where('code', $provinceId)->get()->toArray();
         $pdfData['company_address'] = $pdfData['company_address'] . ', ' . strtolower($pdfData['city']['name'] . ', ' . strtolower($province['name']));
         $pdfData['director_name'] = 'H. ZAINUDDIN, SE. M.I.KOM';
+        $port = empty($currentUrl['port']) ? '' : ':' . $currentUrl['port'];
+        $parsedUrl = $currentUrl['scheme'] . '://' . $currentUrl['host'] . $port;
+        $pdfData['url_period'] = $parsedUrl . '/assets/' . $pdfData['period'] . '.png';
+        $pdfData['url_barcode_sign'] = 'https://api.qrserver.com/v1/create-qr-code/?data=' . $parsedUrl . '/assets/ttd.jpg';
         $pdfData['url_barcode'] = 'https://api.qrserver.com/v1/create-qr-code/?data=' . url()->current() . '&amp;size=100x100';
 
         $pdf = Pdf::loadView('index', $pdfData)->setPaper('a4', 'landscape');
