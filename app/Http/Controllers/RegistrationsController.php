@@ -40,7 +40,13 @@ class RegistrationsController extends Controller
         $currentUrl = parse_url(url()->current());
         $data = $this->detailNpwp($npwp);
         $pdfData = $data->toArray($data);
-        $pdfData['currentYear'] = $pdfData['period'];
+
+        $period = $pdfData['period'];
+        if ($period == 2024) {
+            $period = 2025;
+        }
+
+        $pdfData['currentYear'] = $period;
         $pdfData['provinces'] = $pdfData['city']->toArray();
         $provinceId = explode('.', $pdfData['city']['code']);
         [$province] = Province::where('code', $provinceId)->get()->toArray();
@@ -48,7 +54,7 @@ class RegistrationsController extends Controller
         $pdfData['director_name'] = 'H. ZAINUDDIN, SE. M.I.KOM';
         $port = empty($currentUrl['port']) ? '' : ':' . $currentUrl['port'];
         $parsedUrl = $currentUrl['scheme'] . '://' . $currentUrl['host'] . $port;
-        $pdfData['url_period'] = $parsedUrl . '/assets/' . $pdfData['period'] . '.png';
+        $pdfData['url_period'] = $parsedUrl . '/assets/' . $pdfData['currentYear'] . '.png';
         $pdfData['url_barcode_sign'] = 'https://api.qrserver.com/v1/create-qr-code/?data=' . $parsedUrl . '/assets/ttd.jpg';
         $pdfData['url_barcode'] = 'https://api.qrserver.com/v1/create-qr-code/?data=' . url()->current() . '&amp;size=100x100';
 
@@ -60,7 +66,14 @@ class RegistrationsController extends Controller
     public function detailNpwp(string $npwp): RegistrationsResource
     {
         $period = $_GET['period'] ?? date('Y');
-        $regist = Registration::where('npwp', $npwp)->where('period', $period)->first();
+        $regist = Registration::where('npwp', $npwp);
+
+        $mixedYear = [2024, 2025];
+        if (in_array($period, $mixedYear)) {
+            $regist = $regist->whereBetween('period', [2024, 2025])->first();
+        } else {
+            $regist = $regist->where('period', $period)->first();
+        }
 
         if (!$regist) {
             throw new HttpResponseException(response()->json([
@@ -115,7 +128,11 @@ class RegistrationsController extends Controller
             }
 
             $period = $request->input('period');
-            if ($period) {
+            $mixedYear = [2024, 2025];
+
+            if (in_array($period, $mixedYear)) {
+                $builder->whereBetween('period', $mixedYear);
+            } else if ($period) {
                 $builder->where('period', $period);
             }
 
